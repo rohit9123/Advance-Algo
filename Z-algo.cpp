@@ -30,6 +30,7 @@
 #define fast ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
  
 using namespace std;
+long long fact[100001];
 
 vector<int> z_function(string s) {
     int n = s.size();
@@ -49,12 +50,77 @@ vector<int> z_function(string s) {
     }
     return z;
 }
+long long pow(long long a,int b){
+    if(b==0) return 1;
+    if(b==1) return a;
+    long long ans=pow(a,b/2);
+    ans=(ans*ans)%mod;
+    if(b%2==1) ans=(ans*a)%mod;
+    return ans;
+}
 
+long long ncr(int total,int k){
+    long long ans=1;
+    ans=(fact[total]*pow(fact[k],mod-2)*pow(fact[total-k],mod-2))%mod;
+    return ans;
+}
 
+void intialize(){
+    fact[0]=1;
+    for(int i=1;i<=100000;i++){
+        fact[i]=(fact[i-1]*i)%mod;
+    }
+}
 int main(){
-    string s;
-    int n,q;
-    cin>>n>>q;
-    cin>>s;
-    
+    intialize();
+    int test;
+    cin>>test;
+    while(test--){
+        string s;
+        long long n,q;
+        cin>>n>>q;
+        cin>>s;
+        string p="";
+        long long total_s=0;
+        for(int i=0;i<n;i++){
+            p+=s[i];
+            vector<int> z=z_function(p+s);
+            long max=0;
+            for(int j=p.size();j<z.size();j++){
+                if(z[j]>max) max=z[j];
+            }
+            total_s+=s.size()+1-max;
+
+        }
+        cout<<total_s<<endl;
+        // unordered_map<int,int> ok;
+        // unordered_set<string> st;
+        // for(int i=0;i<n;i++){
+        //     string p="";
+        //     for(int j=i;j<n;j++){
+        //         p+=s[j];
+        //         if(st.find(p)!=st.end()) continue;
+        //         st.insert(p);
+        //         vector<int> z=z_function(p+'$'+s);
+        //         long long total=0;
+        //         for(int k=0;k<z.size();k++){
+        //             if(z[k]==p.size()){
+        //                 total++;
+        //             }
+        //         }
+        //         for(int k=2;k<=total;k++){
+        //             long long ways=ncr(total,k);
+        //             ok[k]=(ok[k]+ways)%mod;
+        //         }
+        //     }
+        // }
+        // while(q--){
+        //     int no;cin>>no;
+        //     if(no==1){
+        //         cout<<(n*(n+1))/2<<endl;
+        //     }else{
+        //         cout<<ok[no]<<endl;
+        //     }
+        // }
+    }
 }
